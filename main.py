@@ -72,16 +72,6 @@ def get_etas(stop_id):
 select_stop()
 
 """
-all_stops_id = 3
-print("Buses for " + UB_routes[all_stops_id].getStops()[0].name + " on the " + UB_routes[all_stops_id].name + " route arrive in:")
-get_etas(str(UB_routes[all_stops_id].getStops()[0].id))
-"""
-"""
-ID  System Name
-5230 UB Shuttle
-4882 UB Stampede"""
-
-"""
 To find ID:
 systems = passiogo.getSystems()
 
