@@ -1,4 +1,5 @@
 import configparser
+import system
 
 class ConfigHandler:
     def __init__(self, file_name='config.ini'):
@@ -6,10 +7,21 @@ class ConfigHandler:
         self.config = configparser.ConfigParser()
         self.system_ids = []
 
-    def get_system_ids(self):
+    def get_systems(self):
+        systems = []
         self.read_config()
-        self.system_ids = [x[1] for x in self.config.items('systems')] # Only get ID from each (name, ID) tuple
+
+        for sys in self.config.items('systems'):
+            systems.append(sys)
+
+        return systems
+
+    def get_system_ids(self):
+        systems = self.get_systems()
+
+        self.system_ids = [x[1] for x in systems] # Only get ID from each (name, ID) tuple
         return self.system_ids
+
 
     def read_config(self):
         self.config.read(self.file_name)

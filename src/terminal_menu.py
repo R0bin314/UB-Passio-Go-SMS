@@ -1,37 +1,50 @@
 import random
-
 import requests
 
 import system
 import config_handler
-import passiogo
 
 BASE_URL = "https://passiogo.com/mapGetData.php?eta=3&deviceId="
-
 
 class TerminalMenu:
 
     def __init__(self):
         # Need to select system
 
-        self.UB_STAMPEDE_ID = get_system_ids()[0]
-        self.ub_system = system.System(self.UB_STAMPEDE_ID)
-        self.ub_routes = self.ub_system.getRoutes()
+        self.system_ids = get_system_ids()
+        self.systems = get_systems()
 
+        self.selected_system : system.System = get_systems()[0]
+        self.selected_system_id = self.selected_system.id
+        self.selected_routes = self.selected_system.getRoutes()
+        self.select_system()
         self.select_stop()
+
+    def select_system(self):
+        print("Please select a system:")
+        i=0
+
+        for sys in self.systems:
+            print(str(i) + ". " + sys.name)
+            i+=1
+        
+        system_selection = input("\nSystem selection: ")
+        self.selected_system = self.systems[int(system_selection)]
+        self.selected_system_id = self.selected_system.id
+        self.selected_routes = self.selected_system.getRoutes()
 
     def select_route(self):
         print("Please select a route:")
 
         i = 0
-        for route in self.ub_routes:
+        for route in self.selected_routes:
             print(str(i) + ". " + route.name)
             i += 1
 
         route_selection = input("\nRoute selection: ")
-        route = self.ub_routes[int(route_selection)]
+        route = self.selected_routes[int(route_selection)]
 
-        if int(route_selection) <= len(self.ub_routes) or int(route_selection) < 0:
+        if int(route_selection) <= len(self.selected_routes) or int(route_selection) < 0:
             print_route_info(route)
             return route
         else:
@@ -51,6 +64,13 @@ def get_system_ids():
     confighandler = config_handler.ConfigHandler()
     system_ids = confighandler.get_system_ids()
     return system_ids
+
+def get_systems():
+    confighandler = config_handler.ConfigHandler()
+    systems = confighandler.get_systems()
+    return [system.System(x[1]) for x in systems]
+    #return systems
+
 
 
 def print_route_info(route):
