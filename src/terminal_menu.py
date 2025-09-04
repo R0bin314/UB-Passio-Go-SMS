@@ -68,9 +68,7 @@ def get_system_ids():
 def get_systems():
     confighandler = config_handler.ConfigHandler()
     systems = confighandler.get_systems()
-    return [system.System(x[1]) for x in systems]
-    #return systems
-
+    return [system.System(x[1]) for x in systems] # Create list for each system based on ID
 
 
 def print_route_info(route):

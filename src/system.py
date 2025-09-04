@@ -1,4 +1,3 @@
-import config_handler
 import passiogo
 
 class System:
@@ -8,5 +7,5 @@ class System:
         self.name = self.system.name
         self.routes = self.system.getRoutes()
 
-    def getRoutes(self):
+    def getRoutes(self): # Naming convention from passio go API
         return self.system.getRoutes()
