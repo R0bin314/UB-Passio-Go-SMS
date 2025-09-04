@@ -7,11 +7,16 @@ Maybe turn this into a module so I can create SMS and terminal?
 import random
 import passiogo
 import requests
-UB_STAMPEDE_ID = 4882 # Stampede
-UB_SHUTTLE_ID = 5230 # Shuttle
+import config_handler
+
+config_handler = config_handler.ConfigHandler()
+SYSTEM_IDS = config_handler.get_system_ids()
+
+UB_STAMPEDE_ID = int(SYSTEM_IDS[0])
+UB_SHUTTLE_ID = int(SYSTEM_IDS[1])
 
 BASE_URL = "https://passiogo.com/mapGetData.php?eta=3&deviceId="
-UB_system = passiogo.getSystemFromID(UB_STAMPEDE_ID)
+UB_system = passiogo.getSystemFromID(UB_STAMPEDE_ID) #TODO: ADD SHUTTLE SYSTEM
 UB_routes = UB_system.getRoutes()
 
 def select_route():
