@@ -5,7 +5,15 @@ class System:
         self.id = system_id
         self.system = passiogo.getSystemFromID(int(system_id))
         self.name = self.system.name
-        self.routes = self.system.getRoutes()
+        self.routes = []
+        """for route in self.system.getRoutes():
+            if route.outdated != '1':
+                self.routes.append(route)"""
+
+        self.routes = [route for route in self.system.getRoutes() if (route.outdated!='1')]
 
     def getRoutes(self): # Naming convention from passio go API
-        return self.system.getRoutes()
+        return self.getRoutes()
+
+    def get_available_routes(self):
+        return self.routes

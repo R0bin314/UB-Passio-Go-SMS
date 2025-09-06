@@ -13,51 +13,70 @@ class TerminalMenu:
 
         self.system_ids = get_system_ids()
         self.systems = get_systems()
-
-        self.selected_system : system.System = get_systems()[0]
-        self.selected_system_id = self.selected_system.id
-        self.selected_routes = self.selected_system.getRoutes()
-        self.select_system()
-        self.select_stop()
-
-    def select_system(self):
-        print("Please select a system:")
-        i=0
-
+        self.routes = []
+        #system_routes = []
         for sys in self.systems:
-            print(str(i) + ". " + sys.name)
-            i+=1
-        
-        system_selection = input("\nSystem selection: ")
-        self.selected_system = self.systems[int(system_selection)]
-        self.selected_system_id = self.selected_system.id
-        self.selected_routes = self.selected_system.getRoutes()
+            #system_routes = sys.get_available_routes()
+            self.routes += sys.get_available_routes()
+        is_minimal = False # Used for smaller devices
+
+
 
     def select_route(self):
         print("Please select a route:")
 
         i = 0
-        for route in self.selected_routes:
+        for route in self.routes:
             print(str(i) + ". " + route.name)
             i += 1
 
         route_selection = input("\nRoute selection: ")
-        route = self.selected_routes[int(route_selection)]
+        route = self.routes[int(route_selection)]
 
-        if int(route_selection) <= len(self.selected_routes) or int(route_selection) < 0:
+        if int(route_selection) <= len(self.routes) or int(route_selection) < 0:
             print_route_info(route)
             return route
         else:
             print("Invalid route selected.")
             return None
 
-    def select_stop(self):
+    def __select_stop(self):
         route = self.select_route()
 
         stop_selection = input("\nSelect a stop: ")
         stop = route.getStops()[int(stop_selection)]
 
         print_stop_info(route, stop)
+
+    def help(self):
+        print("help")
+
+    def show_start_menu(self):
+        print("""
+  _____              _          _____       _    _____ __  __  _____ 
+ |  __ \\            (_)        / ____|     | |  / ____|  \\/  |/ ____|
+ | |__) |_ _ ___ ___ _  ___   | |  __  ___ | | | (___ | \\  / | (___  
+ |  ___/ _` / __/ __| |/ _ \\  | | |_ |/ _ \\| |  \\___ \\| |\\/| |\\___ \\ 
+ | |  | (_| \\__ \\__ \\ | (_) | | |__| | (_) |_|  ____) | |  | |____) |
+ |_|   \\__,_|___/___/_|\\___/   \\_____|\\___/(_) |_____/|_|  |_|_____/ 
+        
+        """)
+        
+        print("Welcome to Passio Go! SMS")
+        print("This is the terminal version primarily used for testing. It lacks SMS capabilities.")
+
+        print("\nPlease enter a command. For help, enter 'help' or '?'")
+        start_menu_selection = input("> ")
+
+        if start_menu_selection == "help" or start_menu_selection == '?':
+            self.help()
+
+
+
+
+    def show(self):
+        self.show_start_menu()
+        #self.__select_stop()
 
 
 def get_system_ids():
