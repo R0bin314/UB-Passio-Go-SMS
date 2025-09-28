@@ -57,7 +57,9 @@ class TerminalMenu:
                 stops = route.getStops()
                 if int(stop_selection) < len(stops) or int(stop_selection) < 0:
                     stop = stops[int(stop_selection)]
-                    print_etas(route, stop) # Stop is passed through to prevent API from being queried twice
+                    if print_etas(route, stop) is None: # Stop is passed through to prevent API from being queried twice
+                        print("I'm sorry, no busses go to this stop!\n")
+                        self.show_start_menu()
                 else:
                     print("Invalid stop selected. To return to the menu, select '#'")
                     self.__select_stop(route=route, stops=stops)
@@ -141,13 +143,17 @@ def get_etas(stop):
                              str(random.randint(10000000,99999999)) + "&stopIds=" + str(stop_id))
     stop_json = stop_data.json()
 
-    eta_list = stop_json['ETAs'][stop_id] # Lists all ETAs for stop w/ info about buses, etc.
 
-    for eta in eta_list:
-        print("* " + eta['eta'])
+    if stop_id in stop_json['ETAs'].keys():
+        eta_list = stop_json['ETAs'][stop_id] # Lists all ETAs for stop w/ info about buses, etc.
+        for eta in eta_list:
+            print("* " + eta['eta'])
+        return 'Success' # Ignore
+    else:
+        return None
 
 
 def print_etas(route, stop):
     print("Route Name: " + route.name)
     print("Stop Name: " + stop.name)
-    get_etas(stop)
+    return get_etas(stop)
