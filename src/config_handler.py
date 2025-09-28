@@ -5,6 +5,7 @@ class ConfigHandler:
         self.file_name = file_name
         self.config = configparser.ConfigParser()
         self.system_ids = []
+        self.minimal = False
 
     def get_systems(self): # Returns tuples (name, ID)
         systems = []
@@ -20,6 +21,11 @@ class ConfigHandler:
 
         self.system_ids = [x[1] for x in systems] # Only get ID from each (name, ID) tuple
         return self.system_ids
+
+    def get_minimal(self):
+        self.read_config()
+        self.minimal = self.config.getboolean('terminal', 'minimal')
+        return self.minimal
 
 
     def read_config(self):
