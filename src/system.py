@@ -12,8 +12,5 @@ class System:
 
         self.routes = [route for route in self.system.getRoutes() if (route.outdated!='1')]
 
-    def getRoutes(self): # Naming convention from passio go API
-        return self.getRoutes()
-
     def get_available_routes(self):
         return self.routes
